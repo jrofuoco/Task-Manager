@@ -12,6 +12,8 @@ import com.example.taskmanager.R;
 
 public class TaskAdapter extends ListAdapter<TaskUI, TaskAdapter.TaskViewHolder> {
 
+    private OnItemClickListener listener;
+
     public TaskAdapter() {
         super(DIFF_CALLBACK);
     }
@@ -48,7 +50,7 @@ public class TaskAdapter extends ListAdapter<TaskUI, TaskAdapter.TaskViewHolder>
         holder.time.setText(currentTask.getTime());
     }
 
-    static class TaskViewHolder extends RecyclerView.ViewHolder {
+    class TaskViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final TextView description;
         private final TextView date;
@@ -60,6 +62,21 @@ public class TaskAdapter extends ListAdapter<TaskUI, TaskAdapter.TaskViewHolder>
             description = itemView.findViewById(R.id.task_description);
             date = itemView.findViewById(R.id.task_date);
             time = itemView.findViewById(R.id.task_time);
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(getItem(position));
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(TaskUI task);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }
