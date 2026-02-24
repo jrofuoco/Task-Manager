@@ -29,7 +29,7 @@ public class TaskUI {
     public static List<TaskUI> fromTasks(List<Task> tasks) {
         List<TaskUI> uiTasks = new ArrayList<>();
         for (Task task : tasks) {
-            uiTasks.add(new TaskUI(task.getId(), task.getTitle(), task.getDescription(), task.getTime(), task.getDate()));
+            uiTasks.add(new TaskUI(task.id, task.title, task.description, task.time, task.date));
         }
         return uiTasks;
     }
