@@ -20,12 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class Homepage extends AppCompatActivity {
     private AddTaskViewModel addTask;
 
-    private EditText etTaskTitle;
-    private EditText etTaskDescription;
-    private EditText etTaskTime;
-    private EditText etTaskDate;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +28,6 @@ public class Homepage extends AppCompatActivity {
         addTask = new ViewModelProvider(this).get(AddTaskViewModel.class);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        etTaskDate = findViewById(R.id.et_task_date);
-        etTaskDescription = findViewById(R.id.et_task_description);
-        etTaskTime = findViewById(R.id.et_task_time);
-        etTaskTitle = findViewById(R.id.et_task_title);
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +48,10 @@ public class Homepage extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_add_task, null);
+        final EditText etTaskTitle = dialogView.findViewById(R.id.et_task_title);
+        final EditText etTaskDescription = dialogView.findViewById(R.id.et_task_description);
+        final EditText etTaskTime = dialogView.findViewById(R.id.et_task_time);
+        final EditText etTaskDate = dialogView.findViewById(R.id.et_task_date);
         builder.setView(dialogView)
                 .setTitle("Add Task")
                 .setPositiveButton("Add", (dialog, which) -> {
