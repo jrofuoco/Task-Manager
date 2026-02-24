@@ -12,22 +12,42 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskmanager.R;
 import com.example.taskmanager.viewmodel.AddTaskViewModel;
+import com.example.taskmanager.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Homepage extends AppCompatActivity {
-    private AddTaskViewModel addTask;
+    private AddTaskViewModel addTaskViewModel;
+    private TaskViewModel taskViewModel;
+    private TaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
-        addTask = new ViewModelProvider(this).get(AddTaskViewModel.class);
+        addTaskViewModel = new ViewModelProvider(this).get(AddTaskViewModel.class);
+        taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        RecyclerView recyclerView = findViewById(R.id.task_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        taskAdapter = new TaskAdapter();
+        recyclerView.setAdapter(taskAdapter);
+
+        taskViewModel.getAllTasks().observe(this, tasks -> {
+            List<TaskUI> uiTasks = TaskUI.fromTasks(tasks);
+            taskAdapter.submitList(uiTasks);
+        });
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(v -> {
@@ -56,7 +76,7 @@ public class Homepage extends AppCompatActivity {
                     String description = etTaskDescription.getText().toString();
                     String time = etTaskTime.getText().toString();
                     String date = etTaskDate.getText().toString();
-                    addTask.addTask(title, description, time, date);
+                    addTaskViewModel.addTask(title, description, time, date);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     dialog.dismiss();
