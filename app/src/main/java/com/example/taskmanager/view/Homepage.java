@@ -16,14 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskmanager.R;
+import com.example.taskmanager.data.Task;
 import com.example.taskmanager.viewmodel.AddTaskViewModel;
 import com.example.taskmanager.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Homepage extends AppCompatActivity {
+public class Homepage extends AppCompatActivity implements TaskAdapter.OnItemClickListener, EditTaskDialogFragment.EditTaskDialogListener {
     private AddTaskViewModel addTaskViewModel;
     private TaskViewModel taskViewModel;
     private TaskAdapter taskAdapter;
@@ -43,6 +43,7 @@ public class Homepage extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter();
         recyclerView.setAdapter(taskAdapter);
+        taskAdapter.setOnItemClickListener(this);
 
         taskViewModel.getAllTasks().observe(this, tasks -> {
             List<TaskUI> uiTasks = TaskUI.fromTasks(tasks);
@@ -83,5 +84,16 @@ public class Homepage extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onItemClick(TaskUI task) {
+        EditTaskDialogFragment dialogFragment = EditTaskDialogFragment.newInstance(task);
+        dialogFragment.show(getSupportFragmentManager(), "edit_task_dialog");
+    }
+
+    @Override
+    public void onTaskSaved(Task task) {
+        taskViewModel.update(task);
     }
 }
