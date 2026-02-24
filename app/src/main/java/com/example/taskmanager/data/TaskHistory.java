@@ -3,7 +3,7 @@ package com.example.taskmanager.data;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tasks_histroy")
+@Entity(tableName = "task_history")
 public class TaskHistory {
     @PrimaryKey(autoGenerate = true)
     public int id;
