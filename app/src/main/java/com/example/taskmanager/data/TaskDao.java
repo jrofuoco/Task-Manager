@@ -18,4 +18,7 @@ public interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY id DESC")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("DELETE FROM tasks WHERE id = :taskId")
+    void delete(int taskId);
 }

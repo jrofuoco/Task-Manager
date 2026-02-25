@@ -96,4 +96,9 @@ public class Homepage extends AppCompatActivity implements TaskAdapter.OnItemCli
     public void onTaskSaved(Task task) {
         taskViewModel.update(task);
     }
+
+    @Override
+    public void onTaskDeleted(int taskId) {
+        taskViewModel.delete(taskId);
+    }
 }

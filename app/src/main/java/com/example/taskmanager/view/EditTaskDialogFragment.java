@@ -18,7 +18,7 @@ import com.example.taskmanager.data.Task;
 public class EditTaskDialogFragment extends DialogFragment {
 
     private EditText etTitle, etDescription, etTime, etDate;
-    private Button btnSave;
+    private Button btnSave, btnCancel, btnDelete;
 
     private static final String ARG_TASK_ID = "taskId";
     private static final String ARG_TASK_TITLE = "taskTitle";
@@ -28,6 +28,7 @@ public class EditTaskDialogFragment extends DialogFragment {
 
     public interface EditTaskDialogListener {
         void onTaskSaved(Task task);
+        void onTaskDeleted(int taskId);
     }
 
     public static EditTaskDialogFragment newInstance(TaskUI task) {
@@ -54,6 +55,9 @@ public class EditTaskDialogFragment extends DialogFragment {
         etTime = view.findViewById(R.id.et_edit_task_time);
         etDate = view.findViewById(R.id.et_edit_task_date);
         btnSave = view.findViewById(R.id.btn_save);
+        btnCancel = view.findViewById(R.id.btn_cancel);
+        btnDelete = view.findViewById(R.id.btn_delete);
+
 
         if (getArguments() != null) {
             etTitle.setText(getArguments().getString(ARG_TASK_TITLE));
@@ -74,6 +78,19 @@ public class EditTaskDialogFragment extends DialogFragment {
             EditTaskDialogListener listener = (EditTaskDialogListener) getActivity();
             listener.onTaskSaved(task);
             dismiss();
+        });
+
+        btnCancel.setOnClickListener(v -> {
+            dismiss();
+        });
+
+        //TODO: Delete Task
+        btnDelete.setOnClickListener(v -> {
+            int taskId = getArguments().getInt(ARG_TASK_ID);
+            EditTaskDialogListener listener = (EditTaskDialogListener) getActivity();
+            listener.onTaskDeleted(taskId);
+            dismiss();
+
         });
 
         builder.setView(view)

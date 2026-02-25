@@ -31,6 +31,10 @@ public class TaskRepository {
         executor.execute(() -> taskDao.update(task));
     }
 
+    public void delete(int task){
+        executor.execute(() -> taskDao.delete(task));
+    }
+
     public LiveData<List<Task>> getAllTasks() {
         return allTasks;
     }
